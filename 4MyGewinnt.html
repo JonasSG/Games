@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *,*::after,*::before {
+            box-sizing: border-box;
+        }
+        :root{
+            --cell-size:100px;
+            --mark-size: calc(var(--cell-size)*.8);
+        }
+        body{
+            margin: 0;
+            font-size: 3rem;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .field{
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            align-content: center;
+            justify-content: center;
+            justify-items: center;
+            align-items: center;
+            grid-template-columns: repeat(7,auto); 
+        }
+
+        .cell.blue,
+        .cell.red{
+            cursor: not-allowed;
+        }
+        .cell.blue::before{
+            background-color: rgb(0, 0, 179);
+        }
+        .cell.blue::after{
+            background-color: rgb(62, 73, 230);
+        }
+        .field.blue .cell:not(.blue):not(.red):hover::before{
+            background-color: rgb(52, 51, 77);
+        }
+        .field.blue .cell:not(.blue):not(.red):hover{
+            background-color: rgb(60, 53, 255);
+        }
+        .field.blue .cell:not(.blue):not(.red):hover::after{
+            background-color: rgb(94, 102, 145);
+        }
+        .cell.blue{
+            background-color:rgb(23, 23, 255) ;
+        }
+        .cell.red{
+            background-color:rgb(23, 23, 255) ;
+        }
+        .cell.red::before{
+            background-color: rgb(255, 0, 0);
+        }
+        .cell.red::after{
+            background-color: rgb(230, 62, 62);
+        }
+        .field.red .cell:not(.blue):not(.red):hover::before{
+            background-color: rgb(224, 110, 110);
+        }
+        .field.red .cell:not(.blue):not(.red):hover{
+            background-color: rgb(32, 47, 253);
+        }
+        .field.red .cell:not(.blue):not(.red):hover::after{
+            background-color: rgb(143, 36, 36);
+        }
+        
+        
+
+        .cell{
+            width: var(--cell-size);
+            height: var(--cell-size);
+            border:1px solid rgb(0, 0, 114);
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            background-color:rgb(255, 255, 255);
+        }
+        .cell::after{
+            content:"";
+            width: var(--mark-size);
+            height: var(--mark-size);
+            border-radius: 50%;  
+            position: absolute;
+            background-color: rgb(255, 255, 255);
+        }
+        .cell::before{
+            content: "";
+            width: var(--cell-size);
+            height: var(--cell-size);  
+            position: absolute;
+            background-color: rgb(11, 28, 253);
+            border:1px solid rgb(0, 0, 114);
+        }
+        
+        
+        .cell.blue::before,
+        .field.blue .cell:not(.blue):not(.red):hover::before{
+            content: "";
+            width: var(--mark-size);
+            height: var(--mark-size);
+            
+            position: absolute;
+            border-radius: 50%;
+        }
+        .cell.blue::after,
+        .field.blue .cell:not(.blue):not(.red):hover::after{
+            content: "";
+            width: calc(var(--mark-size)*.8);
+            height: calc(var(--mark-size)*.8);
+            
+            position: absolute;
+            border-radius: 50%;
+        }
+        .cell.red::before,
+        .field.red .cell:not(.blue):not(.red):hover::before{
+            content: "";
+            width: var(--mark-size);
+            height: var(--mark-size);
+            
+            position: absolute;
+            border-radius: 50%;
+        }
+        .cell.red::after,
+        .field.red .cell:not(.blue):not(.red):hover::after{
+            content: "";
+            width: calc(var(--mark-size)*.8);
+            height: calc(var(--mark-size)*.8);
+            
+            position: absolute;
+            border-radius: 50%;
+        }
+        .overlay{
+            display:none ;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
+            position:fixed;
+            background-color: rgba(0, 0, 0, 0.705);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .message{
+            display: flex;
+            content: "message";
+            color: white;
+        }
+        .button{
+            display: flex;
+            font-size: 3rem;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+        .button:hover{
+            display: flex;
+            font-size: 3rem;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            background-color: black;
+            color: white;
+            border-color: yellow;
+        }
+       
+
+    </style>
+    <script>
+        function hideaway(){      //Achtung Overlay display auf flex setzen
+        document.getElementById("overlay").style.display ="none";
+        }
+    </script>
+</head>
+<body>
+    
+        <div id="field"class="field blue">
+               <div class="cell" data-cell id="cell0"></div>
+               <div class="cell" data-cell id="cell1"></div>
+               <div class="cell" data-cell id="cell2"></div>
+               <div class="cell" data-cell id="cell3"></div>
+               <div class="cell" data-cell id="cell4"></div>
+               <div class="cell" data-cell id="cell5"></div>
+               <div class="cell" data-cell id="cell6"></div>
+               <div class="cell" data-cell id="cell7"></div>
+               <div class="cell" data-cell id="cell8"></div>
+               <div class="cell" data-cell id="cell9"></div>
+               <div class="cell" data-cell id="cell10"></div>
+               <div class="cell" data-cell id="cell11"></div>
+               <div class="cell" data-cell id="cell12"></div>
+               <div class="cell" data-cell id="cell13"></div>
+               <div class="cell" data-cell id="cell14"></div>
+               <div class="cell" data-cell id="cell15"></div>
+               <div class="cell" data-cell id="cell16"></div>
+               <div class="cell" data-cell id="cell17"></div>
+               <div class="cell" data-cell id="cell18"></div>
+               <div class="cell" data-cell id="cell19"></div>
+               <div class="cell" data-cell id="cell20"></div>
+               <div class="cell" data-cell id="cell21"></div>
+               <div class="cell" data-cell id="cell22"></div>
+               <div class="cell" data-cell id="cell23"></div>
+               <div class="cell" data-cell id="cell24"></div>
+               <div class="cell" data-cell id="cell25"></div>
+               <div class="cell" data-cell id="cell26"></div>
+               <div class="cell" data-cell id="cell27"></div>
+               <div class="cell" data-cell id="cell28"></div>
+               <div class="cell" data-cell id="cell29"></div>
+               <div class="cell" data-cell id="cell30"></div>
+               <div class="cell" data-cell id="cell31"></div>
+               <div class="cell" data-cell id="cell32"></div>
+               <div class="cell" data-cell id="cell33"></div>
+               <div class="cell" data-cell id="cell34"></div>
+               <div class="cell" data-cell id="cell35"></div>
+               <div class="cell" data-cell id="cell36"></div>
+               <div class="cell" data-cell id="cell37"></div>
+               <div class="cell" data-cell id="cell38"></div>
+               <div class="cell" data-cell id="cell39"></div>
+               <div class="cell" data-cell id="cell40"></div>
+               <div class="cell" data-cell id="cell41"></div>
+               
+        </div>
+        <div>
+            <button onclick="startGame()">
+                Restart
+            </button>
+        </div>
+    
+    
+    <div id="overlay"class="overlay">
+        <div class="message"id="message">Draw!</div>
+        <button class="button" onclick="hideaway(),refresh()">
+            Restart
+        </button>
+    </div>
+    </div>
+    <script>
+        const RED_CLASS = "red";
+        const BLUE_CLASS = "blue";
+        const field = document.getElementById("field");
+        let turn = 1;
+        let counter= 0;let n = 0;
+        let WIN = [];
+        for (let m = 0; m <= 35 ; m+=7) {
+           WIN.push( [0+m,1+m,2+m,3+m],
+            [1+m,2+m,3+m,4+m],
+            [2+m,3+m,4+m,5+m],
+            [3+m,4+m,5+m,6+m],)
+        }
+        for (let m = 0; m <= 6 ; m++) {
+            WIN.push( [0+m,7+m,14+m,21+m],
+                [7+m,14+m,21+m,28+m],
+                [14+m,21+m,28+m,35+m]
+                
+            ); 
+        }
+        for (let m = 0; m <=3; m++) {
+            WIN.push([0+m,8+m,16+m,24+m],
+                [7+m,15+m,23+m,31+m],
+                [14+m,22+m,30+m,38+m],
+
+            );      
+        }
+        for (let m = 0; m <=3; m++) {
+            WIN.push([3+m,9+m,15+m,21+m],
+                [10+m,16+m,22+m,28+m],
+                [17+m,23+m,29+m,35+m],
+
+            );      
+        }
+        function refresh(){
+            for (let i = 0; i <= 41; i++) {
+                document.getElementById("cell"+i).removeEventListener;
+                document.getElementById("cell"+i).classList.remove("blue");
+                document.getElementById("cell"+i).classList.remove("red");
+            }
+            giveEvent();
+        }
+        newStart();
+        
+        function newStart(){
+            counter= 0;
+            turn= 1;
+            setFieldHoverClass();
+            document.getElementById("overlay").style.display="none";
+            for (let i = 0; i <= 41; i++) {
+                document.getElementById("cell"+i).removeEventListener;
+                document.getElementById("cell"+i).classList.remove("blue");
+                document.getElementById("cell"+i).classList.remove("red");
+            }
+            giveEvent();
+        }
+       
+
+        function startGame(){
+            counter= 0;
+            turn= 1;
+            setFieldHoverClass();
+            document.getElementById("overlay").style.display="flex";
+            for (let i = 0; i <= 41; i++) {
+                document.getElementById("cell"+i).removeEventListener;
+                document.getElementById("cell"+i).classList.remove("blue");
+                document.getElementById("cell"+i).classList.remove("red");
+            }
+            giveEvent();
+        }
+
+        function swapTurns(){
+                if (turn==1){
+                    return turn=0;
+                }else if(turn==0){
+                    return turn=1;
+
+                };
+        }
+        function setFieldHoverClass(){
+            field.classList.remove(RED_CLASS)
+            field.classList.remove(BLUE_CLASS)
+            if (turn==0) {
+                field.classList.add(RED_CLASS)
+            }else if(turn==1){
+                field.classList.add(BLUE_CLASS)
+            }
+
+        }
+        function giveEvent(){
+        for (let i = 0; i <= 41; i++) {
+            document.getElementById("cell"+i).addEventListener("click",function() {
+                if (turn==0){
+                    currentClass=RED_CLASS
+                }else if(turn==1){
+                    currentClass=BLUE_CLASS
+                }
+                if (document.getElementById("cell"+fall(i)).classList=="cell red"){
+                    console.log("shit")
+                }else if (document.getElementById("cell"+fall(i)).classList=="cell blue"){
+                    console.log("noooo")
+                }else{
+                document.getElementById("cell"+fall(i)).classList.add(currentClass)
+                swapTurns();
+                setFieldHoverClass();
+                n=i;
+                counter++}
+                console.log(i)
+                if(checkWin (currentClass)){
+                    console.log("win"+currentClass)
+                    document.getElementById("message").innerText = currentClass+" WINS"
+                    startGame();
+                    
+                };
+                if (counter>=42){
+                    startGame();
+                };
+                
+                
+            })
+            
+        }
+        }
+        function checkWin(currentClass) {
+            return WIN.some(combination => {
+                return combination.every(index => {
+                    return document.getElementById("cell"+[index]).classList.contains(currentClass)
+                    
+                })
+            })
+        }
+        function fall(i){
+            if(document.getElementById("cell"+i).classList!="cell red"||document.getElementById("cell"+i).classList!="cell blue"){
+                return i
+            }
+
+        }
+        
+        
+        
+
+    </script>
+    </body>
+    </html>
