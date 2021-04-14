@@ -234,7 +234,7 @@
     
     <div id="overlay"class="overlay">
         <div class="message"id="message">Draw!</div>
-        <button class="button" onclick="hideaway(),refresh()">
+        <button class="button" onclick="hideaway()">
             Restart
         </button>
     </div>
@@ -244,7 +244,9 @@
         const BLUE_CLASS = "blue";
         const field = document.getElementById("field");
         let turn = 1;
-        let counter= 0;let n = 0;
+        let counter= 0;
+        setFieldHoverClass();
+        giveEvent();
         let WIN = [];
         for (let m = 0; m <= 35 ; m+=7) {
            WIN.push( [0+m,1+m,2+m,3+m],
@@ -273,29 +275,7 @@
 
             );      
         }
-        function refresh(){
-            for (let i = 0; i <= 41; i++) {
-                document.getElementById("cell"+i).removeEventListener;
-                document.getElementById("cell"+i).classList.remove("blue");
-                document.getElementById("cell"+i).classList.remove("red");
-            }
-            giveEvent();
-        }
-        newStart();
-        
-        function newStart(){
-            counter= 0;
-            turn= 1;
-            setFieldHoverClass();
-            document.getElementById("overlay").style.display="none";
-            for (let i = 0; i <= 41; i++) {
-                document.getElementById("cell"+i).removeEventListener;
-                document.getElementById("cell"+i).classList.remove("blue");
-                document.getElementById("cell"+i).classList.remove("red");
-            }
-            giveEvent();
-        }
-       
+
 
         function startGame(){
             counter= 0;
@@ -303,11 +283,11 @@
             setFieldHoverClass();
             document.getElementById("overlay").style.display="flex";
             for (let i = 0; i <= 41; i++) {
-                document.getElementById("cell"+i).removeEventListener;
+                //document.getElementById("cell"+i).removeEventListener;
                 document.getElementById("cell"+i).classList.remove("blue");
                 document.getElementById("cell"+i).classList.remove("red");
             }
-            giveEvent();
+            //giveEvent();
         }
 
         function swapTurns(){
@@ -336,24 +316,18 @@
                 }else if(turn==1){
                     currentClass=BLUE_CLASS
                 }
-                if (document.getElementById("cell"+fall(i)).classList=="cell red"){
-                    console.log("shit")
-                }else if (document.getElementById("cell"+fall(i)).classList=="cell blue"){
-                    console.log("noooo")
-                }else{
+                if (document.getElementById("cell"+fall(i)).classList=="cell"){
                 document.getElementById("cell"+fall(i)).classList.add(currentClass)
                 swapTurns();
                 setFieldHoverClass();
-                n=i;
                 counter++}
-                console.log(i)
-                if(checkWin (currentClass)){
-                    console.log("win"+currentClass)
+                if(checkWin (currentClass)){                                        //geht nach jedem Zug alle Siegeskombinationen durch
                     document.getElementById("message").innerText = currentClass+" WINS"
                     startGame();
                     
                 };
                 if (counter>=42){
+                    document.getElementById("message").innerText = "Draw"
                     startGame();
                 };
                 
@@ -371,10 +345,65 @@
             })
         }
         function fall(i){
-            if(document.getElementById("cell"+i).classList!="cell red"||document.getElementById("cell"+i).classList!="cell blue"){
-                return i
+            if(i<=6){
+                
+            if(document.getElementById("cell"+(i+35)).classList=="cell"){
+                return i+35;   
+            }else if(document.getElementById("cell"+(i+28)).classList=="cell"){
+                return i+28;
+            }else if(document.getElementById("cell"+(i+21)).classList=="cell"){
+                return i+21;
+            }else if(document.getElementById("cell"+(i+14)).classList=="cell"){
+                return i+14;
+            }else if(document.getElementById("cell"+(i+7)).classList=="cell"){
+                return i+7;
+            }else{
+                return i;
+            }
+            
+            }else if (i<=13) {
+                if(document.getElementById("cell"+(i+28)).classList=="cell"){
+                return i+28;
+            }else if(document.getElementById("cell"+(i+21)).classList=="cell"){
+                return i+21;
+            }else if(document.getElementById("cell"+(i+14)).classList=="cell"){
+                return i+14;
+            }else if(document.getElementById("cell"+(i+7)).classList=="cell"){
+                return i+7;
+            }else{
+                return i;
             }
 
+            }else if (i<=20){
+                if(document.getElementById("cell"+(i+21)).classList=="cell"){
+                return i+21;
+            }else if(document.getElementById("cell"+(i+14)).classList=="cell"){
+                return i+14;
+            }else if(document.getElementById("cell"+(i+7)).classList=="cell"){
+                return i+7;
+            }else{
+                return i;
+            }
+
+            }else if (i<=27){
+                if(document.getElementById("cell"+(i+14)).classList=="cell"){
+                return i+14;
+            }else if(document.getElementById("cell"+(i+7)).classList=="cell"){
+                return i+7;
+            }else{
+                return i;
+            }
+
+            }else if (i<=34){
+                if(document.getElementById("cell"+(i+7)).classList=="cell"){
+                return i+7;
+            }else{
+                
+            }
+
+            }else{
+                return i;
+            }
         }
         
         
